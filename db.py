@@ -1,8 +1,12 @@
 import mysql.connector
 import dbconfig as details
 from datetime import date
+from datetime import datetime
 
 today = date.today()
+now = datetime.now()
+current_time = now.strftime("%H:%M:%S")
+
 d = today.strftime("%d%b%y")
 
 def checktoday():
@@ -14,7 +18,24 @@ def checktoday():
         print("Creating attenance table for today...")
         cmd = "create table "+d+"(rollno varchar(6),1st int,2nd int,3rd int,4th int,5th int,6th int,7th int,8th int)"
         mycursor.execute(cmd)
+        rollnos = getstudlist()
+        for i in rollnos:
+            cmd = "insert into "+d+" values (%s,null,null,null,null,null,null,null,null);"
+            mycursor.execute(cmd,(i,))
+
         mydb.commit()
+
+
+
+def getstudlist():
+    cmd = "select rollno from student"
+    mycursor.execute(cmd)
+    res = mycursor.fetchall()
+    data = []
+    for i in res:
+        data.append(i[0])
+    print(data)
+    return data
 
 
 def scanstaff(tag):
@@ -63,6 +84,15 @@ def addattendance(tag,curr_staff):
 
 
 
+def insertnow(roll):
+    current_time = now.strftime("%H:%M:%S")
+    colnm = 0
+    cmd = "update "+d+" set "+colnm+" 1 where rollno="+roll+";"
+    mycursor.execute(cmd)
+    pass
+
+
+
 try:
     mydb = mysql.connector.connect(host=details.host,user=details.uname,password=details.upass,database=details.database)
     mycursor = mydb.cursor()
@@ -70,4 +100,5 @@ try:
 except:
     print("Error connecting database")
 
-
+checktoday()
+getstudlist()
