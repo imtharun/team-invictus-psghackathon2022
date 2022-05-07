@@ -4,14 +4,12 @@ import time   #for delay functions
  
 arduino = serial.Serial('com3',9600) #Create Serial port object called arduinoSerialData
 time.sleep(2) #wait for 2 secounds for the communication to get established
-
-print (arduino.readline()) #read the serial data and print it as line
+#print (arduino.readline()) #read the serial data and print it as line
 print ("Welcome to student attendance system")
-
+db.checktoday()
 curr_staff = 0
- 
-while 1:      #Do this in loop
-
+while 1: #Do this in loop
+    tag = arduino.readline()
     var = input() #get input from user
     if(curr_staff==0):
         curr_staff = db.scanstaff(tag)

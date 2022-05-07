@@ -16,10 +16,10 @@ void setup()
 }
 void loop() 
 {
+
   // Look for new cards
   if ( ! mfrc522.PICC_IsNewCardPresent()) 
   {
-    Serial.println("found!");
     return;
   }
   // Select one of the cards
@@ -27,7 +27,6 @@ void loop()
   {
     return;
   }
-  
   //Show UID on serial monitor
   Serial.print("UID tag :");
   String content= "";

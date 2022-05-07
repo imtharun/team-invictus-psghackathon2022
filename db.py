@@ -1,5 +1,20 @@
 import mysql.connector
 import dbconfig as details
+from datetime import date
+
+today = date.today()
+d = today.strftime("%d%b%y")
+
+def checktoday():
+    try:
+        cmd = "Select * from "+d
+        mycursor.execute(cmd)
+    
+    except:
+        print("Creating attenance table for today...")
+        cmd = "create table "+d+"(rollno varchar(6),1st int,2nd int,3rd int,4th int,5th int,6th int,7th int,8th int)"
+        mycursor.execute(cmd)
+        mydb.commit()
 
 
 def scanstaff(tag):
@@ -13,9 +28,6 @@ def scanstaff(tag):
     else:
         staff = data[0][0]
     return staff
-
-
-
 
 
 def addattendance(tag,curr_staff):
@@ -57,3 +69,5 @@ try:
 
 except:
     print("Error connecting database")
+
+
