@@ -3,12 +3,15 @@ import dbconfig as details
 from datetime import date
 from datetime import datetime
 
+
 today = date.today()
 now = datetime.now()
 current_time = now.strftime("%H:%M:%S")
 
 d = today.strftime("%d%b%y")
 
+
+#check if the table is available, if not then creates a table for storing today attendances
 def checktoday():
     try:
         cmd = "Select * from "+d
@@ -25,7 +28,7 @@ def checktoday():
         mydb.commit()
 
 
-
+#fetches the student id
 def getstudlist():
     cmd = "select rollno from student;"
     mycursor.execute(cmd)
@@ -35,7 +38,7 @@ def getstudlist():
         data.append(i[0])
     return data
 
-
+#fetches the staff id from database
 def scanstaff(tag):
     staff = 0
     cmd = "SELECT staffid FROM staff where uid=%s"
@@ -47,16 +50,20 @@ def scanstaff(tag):
         staff = data[0][0]
     return staff
 
-
+#updates attendances for the student for the current time
 def addattendance(tag,curr_staff):
     cmd = "SELECT rollno FROM student where uid=%s"
     mycursor.execute(cmd,(tag,))
     data = mycursor.fetchall()
-    rollno = data[0][0]
-    insertnow(rollno)
-    mydb.commit()
+    try:
+        rollno = data[0][0]
+        insertnow(rollno)
+        mydb.commit()
+    except:
+        pass
 
 
+#updating the attendance for the user for the period which he has been present
 def insertnow(roll):
     current_time = now.strftime("%H:%M:%S")
     colnm = 0
@@ -95,9 +102,11 @@ def insertnow(roll):
     mydb.commit()
 
 
+#establishing connection with database
 try:
     mydb = mysql.connector.connect(host=details.host,user=details.uname,password=details.upass,database=details.database)
     mycursor = mydb.cursor(buffered=True)
+    checktoday()
 
 except:
     print("Error connecting database")

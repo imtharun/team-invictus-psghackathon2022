@@ -1,3 +1,4 @@
+#As RFID module was with defect we have made alternative way of inserting tags manually
 import db
 import time 
 
