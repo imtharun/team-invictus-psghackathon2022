@@ -1,6 +1,23 @@
 import mysql.connector
 import dbconfig as details
 
+
+def scanstaff(tag):
+    staff = 0
+    cmd = "SELECT staffid FROM staff where uid=%s"
+    mycursor.execute(cmd,(tag,))
+    data = mycursor.fetchall()
+    print(data)
+    if(data == []):
+        print("Please scan a staff id first")
+    else:
+        staff = data[0][0]
+    return staff
+
+
+
+
+
 def addattendance(tag,curr_staff):
     if(curr_staff==0):
         cmd = "SELECT staffid FROM staff where uid=%s"

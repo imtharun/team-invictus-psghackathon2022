@@ -1,43 +1,56 @@
-#include <ESP8266HTTPClient.h>
-#include <ESP8266WiFi.h>
+#include <SPI.h>
+#include <MFRC522.h>
  
-void setup() {
+#define SS_PIN 10
+#define RST_PIN 9
+MFRC522 mfrc522(SS_PIN, RST_PIN);   // Create MFRC522 instance.
  
-  Serial.begin(115200);                 //Serial connection
-  WiFi.begin("AMCS_IoT Lab", "amcs@kla");   //WiFi connection
- 
-  while (WiFi.status() != WL_CONNECTED) {  //Wait for the WiFI connection completion
- 
-    delay(500);
-    Serial.println("Waiting for connection");
- 
-  }
- 
+void setup() 
+{
+  Serial.begin(9600);   // Initiate a serial communication
+  SPI.begin();      // Initiate  SPI bus
+  mfrc522.PCD_Init();   // Initiate MFRC522
+  Serial.println("Approximate your card to the reader...");
+  Serial.println();
+
 }
- 
-void loop() {
- 
-  if (WiFi.status() == WL_CONNECTED) { //Check WiFi connection status
- 
-    HTTPClient http;    //Declare object of class HTTPClient
- 
-    http.begin("http://192.168.1.88:8085/hello");      //Specify request destination
-    http.addHeader("Content-Type", "text/plain");  //Specify content-type header
- 
-    int httpCode = http.POST("Message from ESP8266");   //Send the request
-    String payload = http.getString();                  //Get the response payload
- 
-    Serial.println(httpCode);   //Print HTTP return code
-    Serial.println(payload);    //Print request response payload
- 
-    http.end();  //Close connection
- 
-  } else {
- 
-    Serial.println("Error in WiFi connection");
- 
+void loop() 
+{
+  // Look for new cards
+  if ( ! mfrc522.PICC_IsNewCardPresent()) 
+  {
+    Serial.println("found!");
+    return;
+  }
+  // Select one of the cards
+  if ( ! mfrc522.PICC_ReadCardSerial()) 
+  {
+    return;
+  }
+  
+  //Show UID on serial monitor
+  Serial.print("UID tag :");
+  String content= "";
+  byte letter;
+  for (byte i = 0; i < mfrc522.uid.size; i++) 
+  {
+     Serial.print(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " ");
+     Serial.print(mfrc522.uid.uidByte[i], HEX);
+     content.concat(String(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " "));
+     content.concat(String(mfrc522.uid.uidByte[i], HEX));
+  }
+  Serial.println();
+  Serial.print("Message : ");
+  content.toUpperCase();
+  if (content.substring(1) == "BD 31 15 2B") //change here the UID of the card/cards that you want to give access
+  {
+    Serial.println("Authorized access");
+    Serial.println();
+    delay(3000);
   }
  
-  delay(30000);  //Send a request every 30 seconds
- 
+ else   {
+    Serial.println(" Access denied");
+    delay(3000);
+  }
 }
