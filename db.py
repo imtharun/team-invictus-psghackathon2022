@@ -22,7 +22,6 @@ def checktoday():
         for i in rollnos:
             cmd = "insert into "+d+" values (%s,null,null,null,null,null,null,null,null);"
             mycursor.execute(cmd,(i,))
-
         mydb.commit()
 
 
@@ -34,7 +33,6 @@ def getstudlist():
     data = []
     for i in res:
         data.append(i[0])
-    print(data)
     return data
 
 
@@ -43,7 +41,6 @@ def scanstaff(tag):
     cmd = "SELECT staffid FROM staff where uid=%s"
     mycursor.execute(cmd,(tag,))
     data = mycursor.fetchall()
-    print(data)
     if(data == []):
         print("Please scan a staff id first")
     else:
@@ -52,34 +49,12 @@ def scanstaff(tag):
 
 
 def addattendance(tag,curr_staff):
-    if(curr_staff==0):
-        cmd = "SELECT staffid FROM staff where uid=%s"
-        mycursor.execute(cmd,(tag,))
-        data = mycursor.fetchall()
-        print(data)
-        if(data == []):
-            print("Please scan a staff id first")
-        else:
-            curr_staff = data[0][0]
-            print(curr_staff)
-        mydb.commit()
-    
-    else:
-        cmd = "SELECT staffid FROM staff where uid=%s"
-        mycursor.execute(cmd,(tag,))
-        data = mycursor.fetchall()
-        print(data)
-        if(data == []):
-            cmd = "SELECT rollno,sname FROM student where uid=%s"
-            mycursor.execute(cmd,(tag,))
-            data = mycursor.fetchall()
-            rollno = data[0][0]
-            sname = data[0][1]
-            insertnow(rollno)
-        else:
-            curr_staff = data[0][0]
-            print(curr_staff)
-        mydb.commit()
+    cmd = "SELECT rollno FROM student where uid=%s"
+    mycursor.execute(cmd,(tag,))
+    data = mycursor.fetchall()
+    rollno = data[0][0]
+    insertnow(rollno)
+    mydb.commit()
 
 
 def insertnow(roll):
@@ -115,9 +90,7 @@ def insertnow(roll):
         colnm="7th"
     if(now>today1620 and now<today1715):
         colnm="8th"
-
-    
-    cmd = "update "+d+" set "+colnm+" = 1 where rollno="+roll+";"
+    cmd = "update "+str(d)+" set "+colnm+" = 1 where rollno="+str(roll)+";"
     mycursor.execute(cmd)
     mydb.commit()
 
@@ -128,6 +101,3 @@ try:
 
 except:
     print("Error connecting database")
-
-checktoday()
-getstudlist()
