@@ -28,7 +28,7 @@ def checktoday():
 
 
 def getstudlist():
-    cmd = "select rollno from student"
+    cmd = "select rollno from student;"
     mycursor.execute(cmd)
     res = mycursor.fetchall()
     data = []
@@ -75,27 +75,56 @@ def addattendance(tag,curr_staff):
             data = mycursor.fetchall()
             rollno = data[0][0]
             sname = data[0][1]
-            cmd = "insert into attendance values (%s,%s,%s,%s);"
-            mycursor.execute(cmd,(rollno,curr_staff,sname,1,))
+            insertnow(rollno)
         else:
             curr_staff = data[0][0]
             print(curr_staff)
         mydb.commit()
 
 
-
 def insertnow(roll):
     current_time = now.strftime("%H:%M:%S")
     colnm = 0
-    cmd = "update "+d+" set "+colnm+" 1 where rollno="+roll+";"
-    mycursor.execute(cmd)
-    pass
+    today830 = now.replace(hour=8, minute=30, second=0, microsecond=0)
+    today920 = now.replace(hour=9, minute=20, second=0, microsecond=0)
+    today930 = now.replace(hour=9, minute=30, second=0, microsecond=0)
+    today110 = now.replace(hour=10, minute=10, second=0, microsecond=0)
+    today1030 = now.replace(hour=10, minute=30, second=0, microsecond=0)
+    today1120 = now.replace(hour=11, minute=20, second=0, microsecond=0)
+    today1210 = now.replace(hour=12, minute=10, second=0, microsecond=0)
+    today1340 = now.replace(hour=13, minute=40, second=0, microsecond=0)
+    today1430 = now.replace(hour=14, minute=30, second=0, microsecond=0)
+    today1520 = now.replace(hour=15, minute=20, second=0, microsecond=0)
+    today1530 = now.replace(hour=15, minute=13, second=0, microsecond=0)
+    today1620 = now.replace(hour=16, minute=20, second=0, microsecond=0)
+    today1715 = now.replace(hour=17, minute=15, second=0, microsecond=0)
 
+    if(now>today830 and now<today920):
+        colnm="1st"
+    if(now>today930 and now<today110):
+        colnm="2nd"
+    if(now>today1030 and now<today1120):
+        colnm="3rd"
+    if(now>today1120 and now<today1210):
+        colnm="4th"
+    if(now>today1340 and now<today1430):
+        colnm="5th"
+    if(now>today1430 and now<today1520):
+        colnm="6th"
+    if(now>today1530 and now<today1620):
+        colnm="7th"
+    if(now>today1620 and now<today1715):
+        colnm="8th"
+
+    
+    cmd = "update "+d+" set "+colnm+" = 1 where rollno="+roll+";"
+    mycursor.execute(cmd)
+    mydb.commit()
 
 
 try:
     mydb = mysql.connector.connect(host=details.host,user=details.uname,password=details.upass,database=details.database)
-    mycursor = mydb.cursor()
+    mycursor = mydb.cursor(buffered=True)
 
 except:
     print("Error connecting database")
