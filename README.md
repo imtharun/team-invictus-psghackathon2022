@@ -9,102 +9,56 @@
 
 ## Problem Statement: PS3 - IOT & Hardware: Automatic attendance system
 
-<br/>
-
 ### Overview
-<br/>
-
 > In a classroom, time is wasted in roll calls as it is done manually. In this proposed system, authorised student is given an RFID tag. RFID [Radio Frequency Identification] based participation framework is an application that will electronically screen the participation of the understudies or the representatives. RFID is an arising innovation which has the capacity of distinguishing exceptional people. This won't permit any strangers to go into the association or the organisation without the character card that will be utilised to screen the participation. The principal parts of the RFID framework are the RFID labels and the RFID per user. The principle point of this venture is to keep up with the subtleties of the workers of the association or the understudies of the foundation by utilising the RFID labels or tag.
 
-<br/>
-
 ### Implementation
-<br/>
-
 > We have implemented this idea using RFID module, once a professor or staff enters into the class he will scan his RFID card and then the attendance portal for the students will be open by the professor and then the students can scan their respective RFID cards and they can give their attendance for the corresponding period. In parallel the session will get recorded to identify who is scanning in the future. The proxying of the students/staff can also be reduced with help of recorded video.
 
-<br/>
-
 ### Hardware implementation
-
-<br />
 <kbd><img src="Setup.jpeg" width="500px"></kbd>
 
-<br/>
-
 ### Tools and Technologies used
-<br/>
-
-> - ARDUNIO UNO
-> - RFID MODULE MFRC522 READER
-> - RFID TAGS
-> - DATABASE SERVER (MYSQL)
-> - HOSTING SERVER
-> - CAMERA MODULE
-
-<br/>
+ - ARDUNIO UNO
+ - RFID MODULE MFRC522 READER
+ - RFID TAGS
+ - DATABASE SERVER (MYSQL)
+ - HOSTING SERVER
+ - CAMERA MODULE
 
 ### How to run
-<br/>
-
-> - Upload the arduino code to the Arudino uno with the given pin out diagram.
-> - Install the required libraries by using
+ - Upload the arduino code to the Arudino uno with the given pin out diagram.
+ - Install the required libraries by using
 
     pip install -r requirments.txt
 
 > Clone this repository and run the file `arduino.py`, after connecting all the requirements .
 
-<br/>
-
 ### Pin out diagram
-<br/>
-
 <kbd><img src="pin-out.jpeg" width="500px"></kbd>
 
-<br/>
-
 ### Libraries and drivers used
-<br/>
-
-> - Serial - For reteriving value from serial output of arduino.
-> - Mysql connector - For establishing connection to the database.
-> - datetime - For fetching the current date and time.
-
-<br/>
+ - Serial - For reteriving value from serial output of arduino.
+ - Mysql connector - For establishing connection to the database.
+ - datetime - For fetching the current date and time.
 
 ### Tables Created
-<br/>
-
 <kbd><img src="Tables.jpeg" width="500px"></kbd>
 
-<br/>
-
 ### Attendance table
-
-This table will created daily and attendance will be updated.
-
-<br/>
+This table will created daily and attendance will be updated. <br/>
 <kbd><img src="AttendanceTable.jpeg" width="500px"></kbd>
 
-<br/>
 
 ### Backend
-<br/>
-
-> - At first, our backend checks whether the table is created for today, if not new table will be created for each student, with eight column which corresponds to eight period.
-> - Initially all the student will be absent, as they scan the RFID card on the RFID reader, the attendance will be given to the corresponding student.
-> - Attendance will be given according to the time they scan the RFID card, for example if student scans the RFID card at 8:35 AM, the attendance will be given to the student for the first period.
-
-<br/>
+ - At first, our backend checks whether the table is created for today, if not new table will be created for each student, with eight column which corresponds to eight period.
+ - Initially all the student will be absent, as they scan the RFID card on the RFID reader, the attendance will be given to the corresponding student.
+ - Attendance will be given according to the time they scan the RFID card, for example if student scans the RFID card at 8:35 AM, the attendance will be given to the student for the first period.
 
 ### Withholden
-<br/>
-
-> - We need to add further ideas for improving the proxying of students.
-> - As students enter the attendance for 1st period, they need to manually once again enter the attendance for the upcoming hours. We will provide solution to overcome this problem.
-> - We missed out the hardware implementation due to an defect in RF Module.
-> - We wil also add face recognition for the current exisiting module.
-
-<br/>
+ - We need to add further ideas for improving the proxying of students.
+ - As students enter the attendance for 1st period, they need to manually once again enter the attendance for the upcoming hours. We will provide solution to overcome this problem.
+ - We missed out the hardware implementation due to an defect in RF Module.
+ - We wil also add face recognition for the current exisiting module.
 
 `Thank you !`
